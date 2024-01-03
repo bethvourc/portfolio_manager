@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Financial Portfolio Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
@@ -25,7 +27,7 @@
 
     <h2>Financial Summary</h2>
     <p>Total Portfolio Value: ${{ total_portfolio_value }}</p>
-    <p>Total Bills Amount: ${{ total_expenses }}</p>
+    <p>Total Bills Amount: ${{ total_bills_amount }}</p>
 
     <h2>Add Portfolio</h2>
     <form action="/add_portfolio" method="post">
@@ -33,7 +35,7 @@
         <input type="text" id="portfolio_name" name="portfolio_name" required>
         <label for="portfolio_amount">Amount:</label>
         <input type="number" id="portfolio_amount" name="portfolio_amount" required>
-        <button type="submit">Add Portfolio</button>
+        <button type="submit"><i class="fas fa-plus"></i> Add Portfolio</button>
     </form>
 
     <h2>Add Bill</h2>
@@ -44,21 +46,21 @@
         <input type="number" id="bill_amount" name="bill_amount" required>
         <label for="bill_due_date">Due Date:</label>
         <input type="date" id="bill_due_date" name="bill_due_date" required>
-        <button type="submit">Add Bill</button>
+        <button type="submit"><i class="fas fa-plus"></i> Add Bill</button>
     </form>
 
     <h2>Total Expenses and Remaining Money</h2>
     <form action="/" method="get">
         <label for="monthly_income">Enter Monthly Income:</label>
         <input type="number" id="monthly_income" name="monthly_income" required>
-        <button type="submit">Calculate</button>
+        <button type="submit"><i class="fas fa-calculator"></i> Calculate</button>
     </form>
 
     <p>Total Expenses: ${{ total_expenses }}</p>
     <p>Remaining Money: ${{ remaining_money }}</p>
 
     <h2>Data Table</h2>
-    <table border="1">
+    <table>
         <tr>
             <th>Item</th>
             <th>Amount</th>

@@ -1,0 +1,98 @@
+/* style.css */
+
+/* Common styles for all screen sizes */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 20px;
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+
+h1, h2 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+ul, p, form {
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+label {
+  margin-right: 10px;
+}
+
+input, button {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+th, td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #4CAF50;
+  color: white;
+}
+
+#expenses-chart {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+/* Responsive styles */
+@media only screen and (max-width: 768px) {
+  /* Adjust styles for smaller screens */
+  body {
+      margin: 10px;
+      padding: 10px;
+  }
+
+  input, button {
+      width: 100%;
+  }
+
+  table {
+      font-size: 14px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  /* Further adjustments for even smaller screens */
+  h1, h2 {
+      font-size: 20px;
+  }
+
+  table {
+      font-size: 12px;
+  }
+}
+
