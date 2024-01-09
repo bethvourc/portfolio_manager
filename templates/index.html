@@ -5,78 +5,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Financial Portfolio Management</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
-    <h1>Financial Portfolio Management</h1>
+    <div id="app">
+        <h1>Financial Portfolio Management</h1>
 
-    <h2>Portfolios</h2>
-    <ul>
-        {% for portfolio in portfolios %}
-            <li>{{ portfolio.name }}: ${{ portfolio.amount }}</li>
-        {% endfor %}
-    </ul>
+        <h2>Portfolios</h2>
+        <ul>
+            <li v-for="portfolio in portfolios">{{ portfolio.name }}: ${{ portfolio.amount }}</li>
+        </ul>
 
-    <h2>Bills</h2>
-    <ul>
-        {% for bill in bills %}
-            <li>{{ bill.name }}: ${{ bill.amount }} (Due on {{ bill.due_date.strftime('%Y-%m-%d') }})</li>
-        {% endfor %}
-    </ul>
+        <h2>Bills</h2>
+        <ul>
+            <li v-for="bill in bills">{{ bill.name }}: ${{ bill.amount }} (Due on {{ bill.due_date }})</li>
+        </ul>
 
-    <h2>Financial Summary</h2>
-    <p>Total Portfolio Value: ${{ total_portfolio_value }}</p>
-    <p>Total Bills Amount: ${{ total_expenses }}</p>
+        <h2>Financial Summary</h2>
+        <p>Total Portfolio Value: ${{ total_portfolio_value }}</p>
+        <p>Total Bills Amount: ${{ total_expenses }}</p>
 
-    <h2>Add Portfolio</h2>
-    <form action="/add_portfolio" method="post">
-        <label for="portfolio_name">Name:</label>
-        <input type="text" id="portfolio_name" name="portfolio_name" required>
-        <label for="portfolio_amount">Amount:</label>
-        <input type="number" id="portfolio_amount" name="portfolio_amount" required>
-        <button type="submit"><i class="fas fa-plus"></i> Add Portfolio</button>
-    </form>
+        <h2>Add Portfolio</h2>
+        <form @submit.prevent="addPortfolio">
+            <label for="portfolio_name">Name:</label>
+            <input v-model="newPortfolio.name" type="text" id="portfolio_name" required>
+            <label for="portfolio_amount">Amount:</label>
+            <input v-model="newPortfolio.amount" type="number" id="portfolio_amount" required>
+            <button type="submit"><i class="fas fa-plus"></i> Add Portfolio</button>
+        </form>
 
-    <h2>Add Bill</h2>
-    <form action="/add_bill" method="post">
-        <label for="bill_name">Name:</label>
-        <input type="text" id="bill_name" name="bill_name" required>
-        <label for="bill_amount">Amount:</label>
-        <input type="number" id="bill_amount" name="bill_amount" required>
-        <label for="bill_due_date">Due Date:</label>
-        <input type="date" id="bill_due_date" name="bill_due_date" required>
-        <button type="submit"><i class="fas fa-plus"></i> Add Bill</button>
-    </form>
+        <h2>Add Bill</h2>
+        <form @submit.prevent="addBill">
+            <label for="bill_name">Name:</label>
+            <input v-model="newBill.name" type="text" id="bill_name" required>
+            <label for="bill_amount">Amount:</label>
+            <input v-model="newBill.amount" type="number" id="bill_amount" required>
+            <label for="bill_due_date">Due Date:</label>
+            <input v-model="newBill.due_date" type="date" id="bill_due_date" required>
+            <button type="submit"><i class="fas fa-plus"></i> Add Bill</button>
+        </form>
 
-    <h2>Total Expenses and Remaining Money</h2>
-    <form action="/" method="get">
-        <label for="monthly_income">Enter Monthly Income:</label>
-        <input type="number" id="monthly_income" name="monthly_income" required>
-        <button type="submit"><i class="fas fa-calculator"></i> Calculate</button>
-    </form>
+        <h2>Total Expenses and Remaining Money</h2>
+        <form @submit.prevent="calculateExpenses">
+            <label for="monthly_income">Enter Monthly Income:</label>
+            <input v-model="monthlyIncome" type="number" id="monthly_income" required>
+            <button type="submit"><i class="fas fa-calculator"></i> Calculate</button>
+        </form>
 
-    <p>Total Expenses: ${{ total_expenses }}</p>
-    <p>Remaining Money: ${{ remaining_money }}</p>
+        <p>Total Expenses: ${{ total_expenses }}</p>
+        <p>Remaining Money: ${{ remaining_money }}</p>
 
-    <h2>Data Table</h2>
-    <table>
-        <tr>
-            <th>Item</th>
-            <th>Amount</th>
-            <th>Due Date</th>
-        </tr>
-        {% for row in table_data %}
+        <h2>Data Table</h2>
+        <table>
             <tr>
-                {% for key, value in row.items() %}
-                    <td>{{ value }}</td>
-                {% endfor %}
+                <th>Item</th>
+                <th>Amount</th>
+                <th>Due Date</th>
             </tr>
-        {% endfor %}
-    </table>
+            <tr v-for="row in table_data">
+                <td v-for="(value, key) in row">{{ value }}</td>
+            </tr>
+        </table>
 
-    <h2>Monthly Expenses Pie Chart</h2>
-    <div id="expenses-chart">{{ graph_html|safe }}</div>
+        <h2>Monthly Expenses Pie Chart</h2>
+        <div id="expenses-chart">{{ graph_html|safe }}</div>
+    </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="{{ url_for('static', filename='vue_app.js') }}"></script>
 </body>
 </html>
