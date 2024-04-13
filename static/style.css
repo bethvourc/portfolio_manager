@@ -2,79 +2,46 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-
 body {
-  font-family: 'Arial', sans-serif;
+  @apply bg-gray-100 font-sans;
 }
 
 h1, h2 {
   @apply text-3xl font-bold mb-5 text-gray-800;
 }
 
-ul, p, form {
-  margin-bottom: 20px;
+ul, p, form, table {
+  @apply mb-5;
 }
 
 form {
-  @apply flex flex-wrap items-center;
+  @apply flex flex-wrap items-center gap-2;
 }
 
-label {
-  @apply mr-2;
+label, input, button, th, td {
+  @apply m-1;
 }
 
 input, button {
-  @apply p-3 mb-3 border rounded;
-  font-size: 16px;
+  @apply p-3 border rounded text-lg;
 }
 
 button {
-  @apply bg-green-500 text-white cursor-pointer transition duration-300;
-}
-
-button:hover {
-  @apply bg-green-600;
+  @apply bg-green-500 text-white cursor-pointer transition duration-300 hover:bg-green-600;
 }
 
 table {
-  @apply border-collapse w-full mb-8;
-}
-
-th, td {
-  @apply p-4 text-left border-b;
+  @apply border-collapse w-full;
 }
 
 th {
-  @apply bg-green-500 text-white;
+  @apply p-4 text-left border-b bg-green-500 text-white;
+}
+
+td {
+  @apply p-4 text-left border-b;
 }
 
 #expenses-chart {
   @apply w-full mb-8;
-}
-
-/* Responsive styles */
-@screen sm {
-  /* Adjust styles for smaller screens */
-  body {
-    @apply p-4;
-  }
-
-  input, button {
-    @apply w-full;
-  }
-
-  table {
-    @apply text-sm;
-  }
-}
-
-@screen xs {
-  /* Further adjustments for even smaller screens */
-  h1, h2 {
-    @apply text-lg;
-  }
-
-  table {
-    @apply text-xs;
-  }
 }
