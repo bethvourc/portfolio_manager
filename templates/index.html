@@ -4,76 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <title>Financial Portfolio Management</title>
+    <title>Financial Portfolio Manager</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
-<body>
+<body class="bg-gray-100">
 
-    <div class="container mx-auto p-8">
+    <div class="container mx-auto p-4 lg:p-8">
 
-        <h1>Financial Portfolio Management</h1>
+        <h1 class="text-center text-4xl font-bold my-5 text-gray-800">Financial Portfolio Manager</h1>
 
-        <section>
-            <h2>Portfolios</h2>
-            <ul>
+        <section class="text-center">
+            <h2 class="text-3xl mb-3">Income</h2>
+            <ul class="list-disc mx-auto">
                 {% for portfolio in portfolios %}
                     <li>{{ portfolio.name }}: ${{ portfolio.amount }}</li>
                 {% endfor %}
             </ul>
         </section>
 
-        <section>
-            <h2>Bills</h2>
-            <ul>
+        <section class="text-center">
+            <h2 class="text-3xl mb-3">Expense</h2>
+            <ul class="list-disc mx-auto">
                 {% for bill in bills %}
                     <li>{{ bill.name }}: ${{ bill.amount }} (Due on {{ bill.due_date.strftime('%Y-%m-%d') }})</li>
                 {% endfor %}
             </ul>
         </section>
 
-        <section>
-            <h2>Financial Summary</h2>
-            <p>Total Portfolio Value: ${{ total_portfolio_value }}</p>
-            <p>Total Bills Amount: ${{ total_expenses }}</p>
+        <section class="text-center">
+            <h2 class="text-3xl mb-3">Financial Summary</h2>
+            <p>Total Monthly Income: ${{ total_portfolio_value }}</p>
+            <p>Total Monthly Expense: ${{ total_expenses }}</p>
         </section>
 
-        <section>
-            <h2>Add Portfolio</h2>
-            <form action="/add_portfolio" method="post">
-                <input type="text" id="portfolio_name" name="portfolio_name" placeholder="Name" required>
-                <input type="number" id="portfolio_amount" name="portfolio_amount" placeholder="Amount" required>
-                <button type="submit">Add Portfolio</button>
+        <section class="text-center">
+            <h2 class="text-3xl mb-3">Add Income</h2>
+            <form action="/add_portfolio" method="post" class="flex flex-col items-center gap-2">
+                <input type="text" id="portfolio_name" name="portfolio_name" placeholder="Name" required class="input">
+                <input type="number" id="portfolio_amount" name="portfolio_amount" placeholder="Amount" required class="input">
+                <button type="submit" class="button">Add Income</button>
             </form>
         </section>
 
-        <section>
-            <h2>Add Bill</h2>
-            <form action="/add_bill" method="post">
-                <input type="text" id="bill_name" name="bill_name" placeholder="Name" required>
-                <input type="number" id="bill_amount" name="bill_amount" placeholder="Amount" required>
-                <input type="date" id="bill_due_date" name="bill_due_date" required>
-                <button type="submit">Add Bill</button>
+        <section class="text-center">
+            <h2 class="text-3xl mb-3">Add Expense</h2>
+            <form action="/add_bill" method="post" class="flex flex-col items-center gap-2">
+                <input type="text" id="bill_name" name="bill_name" placeholder="Name" required class="input">
+                <input type="number" id="bill_amount" name="bill_amount" placeholder="Amount" required class="input">
+                <input type="date" id="bill_due_date" name="bill_due_date" required class="input">
+                <button type="submit" class="button">Add Expense</button>
             </form>
         </section>
 
-        <section>
-            <h2>Calculate Finances</h2>
-            <form action="/" method="get">
-                <input type="number" id="monthly_income" name="monthly_income" placeholder="Monthly Income" required>
-                <input type="number" id="desired_savings" name="desired_savings" placeholder="Desired Savings" required>
-                <button type="submit">Calculate</button>
-            </form>
-            <p>Total Expenses: ${{ total_expenses }}</p>
-            <p>Remaining Money: ${{ remaining_money }}</p>
-            <p>Percentage of Income Spent: {{ spent_percentage }}%</p>
-            <p>Percentage of Income Saved: {{ savings_percentage }}%</p>
-            <p>AI Financial Advice: {{ advice }}</p>
-        </section>
-
-        <section>
-            <h2>Monthly Expenses Pie Chart</h2>
-            <div id="expenses-chart">{{ graph_html|safe }}</div>
+        <section class="text-center">
+            <h2 class="text-3xl mb-3">Monthly Expenses Pie Chart</h2>
+            <div id="expenses-chart" class="w-full mb-8">{{ graph_html|safe }}</div>
         </section>
 
     </div>

@@ -3,7 +3,7 @@
 @import 'tailwindcss/utilities';
 
 body {
-  @apply bg-gray-100 font-sans;
+  @apply font-sans;
 }
 
 h1, h2 {
@@ -15,30 +15,22 @@ ul, p, form, table {
 }
 
 form {
-  @apply flex flex-wrap items-center gap-2;
+  @apply flex flex-col items-center gap-2;
 }
 
-label, input, button, th, td {
-  @apply m-1;
+.input, .button {
+  @apply p-3 border rounded text-lg w-full max-w-xs;
 }
 
-input, button {
-  @apply p-3 border rounded text-lg;
-}
-
-button {
-  @apply bg-green-500 text-white cursor-pointer transition duration-300 hover:bg-green-600;
+.button {
+  @apply bg-blue-500 text-white cursor-pointer transition duration-300 hover:bg-blue-600;
 }
 
 table {
   @apply border-collapse w-full;
 }
 
-th {
-  @apply p-4 text-left border-b bg-green-500 text-white;
-}
-
-td {
+th, td {
   @apply p-4 text-left border-b;
 }
 
