@@ -4,65 +4,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <title>Financial Portfolio Manager</title>
+    <title>Financial Portfolio Management</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body class="bg-gray-100">
 
-    <div class="container mx-auto p-4 lg:p-8">
+    <div class="container mx-auto p-8">
 
-        <h1 class="text-center text-4xl font-bold my-5 text-gray-800">Financial Portfolio Manager</h1>
+        <h1 class="text-4xl font-bold mb-8 text-green-600">Financial Portfolio Management</h1>
 
-        <section class="text-center">
-            <h2 class="text-3xl mb-3">Income</h2>
-            <ul class="list-disc mx-auto">
-                {% for portfolio in portfolios %}
-                    <li>{{ portfolio.name }}: ${{ portfolio.amount }}</li>
+    <h2>Portfolios</h2>
+    <ul>
+        {% for portfolio in portfolios %}
+            <li>{{ portfolio.name }}: ${{ portfolio.amount }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Bills</h2>
+    <ul>
+        {% for bill in bills %}
+            <li>{{ bill.name }}: ${{ bill.amount }} (Due on {{ bill.due_date.strftime('%Y-%m-%d') }})</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Financial Summary</h2>
+    <p>Total Portfolio Value: ${{ total_portfolio_value }}</p>
+    <p>Total Bills Amount: ${{ total_expenses }}</p>
+
+    <h2>Add Portfolio</h2>
+    <form action="/add_portfolio" method="post">
+        <label for="portfolio_name">Name:</label>
+        <input type="text" id="portfolio_name" name="portfolio_name" required>
+        <label for="portfolio_amount">Amount:</label>
+        <input type="number" id="portfolio_amount" name="portfolio_amount" required>
+        <button type="submit"><i class="fas fa-plus"></i> Add Portfolio</button>
+    </form>
+
+    <h2>Add Bill</h2>
+    <form action="/add_bill" method="post">
+        <label for="bill_name">Name:</label>
+        <input type="text" id="bill_name" name="bill_name" required>
+        <label for="bill_amount">Amount:</label>
+        <input type="number" id="bill_amount" name="bill_amount" required>
+        <label for="bill_due_date">Due Date:</label>
+        <input type="date" id="bill_due_date" name="bill_due_date" required>
+        <button type="submit"><i class="fas fa-plus"></i> Add Bill</button>
+    </form>
+
+    <h2>Total Expenses and Remaining Money</h2>
+    <form action="/" method="get">
+        <label for="monthly_income">Enter Monthly Income:</label>
+        <input type="number" id="monthly_income" name="monthly_income" required>
+        <button type="submit"><i class="fas fa-calculator"></i> Calculate</button>
+    </form>
+
+    <p>Total Expenses: ${{ total_expenses }}</p>
+    <p>Remaining Money: ${{ remaining_money }}</p>
+
+    <h2>Data Table</h2>
+    <table>
+        <tr>
+            <th>Item</th>
+            <th>Amount</th>
+            <th>Due Date</th>
+        </tr>
+        {% for row in table_data %}
+            <tr>
+                {% for key, value in row.items() %}
+                    <td>{{ value }}</td>
                 {% endfor %}
-            </ul>
-        </section>
+            </tr>
+        {% endfor %}
+    </table>
 
-        <section class="text-center">
-            <h2 class="text-3xl mb-3">Expense</h2>
-            <ul class="list-disc mx-auto">
-                {% for bill in bills %}
-                    <li>{{ bill.name }}: ${{ bill.amount }} (Due on {{ bill.due_date.strftime('%Y-%m-%d') }})</li>
-                {% endfor %}
-            </ul>
-        </section>
-
-        <section class="text-center">
-            <h2 class="text-3xl mb-3">Financial Summary</h2>
-            <p>Total Monthly Income: ${{ total_portfolio_value }}</p>
-            <p>Total Monthly Expense: ${{ total_expenses }}</p>
-        </section>
-
-        <section class="text-center">
-            <h2 class="text-3xl mb-3">Add Income</h2>
-            <form action="/add_portfolio" method="post" class="flex flex-col items-center gap-2">
-                <input type="text" id="portfolio_name" name="portfolio_name" placeholder="Name" required class="input">
-                <input type="number" id="portfolio_amount" name="portfolio_amount" placeholder="Amount" required class="input">
-                <button type="submit" class="button">Add Income</button>
-            </form>
-        </section>
-
-        <section class="text-center">
-            <h2 class="text-3xl mb-3">Add Expense</h2>
-            <form action="/add_bill" method="post" class="flex flex-col items-center gap-2">
-                <input type="text" id="bill_name" name="bill_name" placeholder="Name" required class="input">
-                <input type="number" id="bill_amount" name="bill_amount" placeholder="Amount" required class="input">
-                <input type="date" id="bill_due_date" name="bill_due_date" required class="input">
-                <button type="submit" class="button">Add Expense</button>
-            </form>
-        </section>
-
-        <section class="text-center">
-            <h2 class="text-3xl mb-3">Monthly Expenses Pie Chart</h2>
-            <div id="expenses-chart" class="w-full mb-8">{{ graph_html|safe }}</div>
-        </section>
-
-    </div>
+    <h2>Monthly Expenses Pie Chart</h2>
+    <div id="expenses-chart">{{ graph_html|safe }}</div>
 
 </body>
 </html>

@@ -18,7 +18,7 @@ class Bill(db.Model):
     amount = db.Column(db.Float, nullable=False)
     due_date = db.Column(db.Date, nullable=False)
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def index():
     portfolios = Portfolio.query.all()
     bills = Bill.query.all()
@@ -27,32 +27,30 @@ def index():
     total_bills_amount = sum([bill.amount for bill in bills])
     total_expenses = total_bills_amount
 
-    monthly_income = request.args.get('monthly_income', type=float, default=0)
-    desired_savings = request.args.get('desired_savings', type=float, default=0)
-    remaining_money = monthly_income - total_expenses
+    # Calculate total expenses and remaining money after deductions
+    remaining_money = 0
+    if 'monthly_income' in request.args:
+        monthly_income = float(request.args['monthly_income'])
+        remaining_money = monthly_income - total_expenses
 
-    # Calculate percentage of income spent and saved
-    spent_percentage = (total_expenses / monthly_income) * 100 if monthly_income else 0
-    savings_percentage = ((monthly_income - total_expenses - desired_savings) / monthly_income) * 100 if monthly_income else 0
-
-    # AI advice (plcaeholder: will try to call an external API here)
-    advice = "Try to reduce your non-essential expenses to increase your savings." if savings_percentage < 20 else "Good job on your savings!"
-
+    # Create a table and a graph
     table_data = [{'Portfolio': portfolio.name, 'Amount': portfolio.amount} for portfolio in portfolios]
     table_data.extend([{'Bill': bill.name, 'Amount': bill.amount, 'Due Date': bill.due_date} for bill in bills])
 
+    # Create a pie chart for expenses
     expense_labels = [bill.name for bill in bills]
     expense_values = [bill.amount for bill in bills]
 
     fig = px.pie(names=expense_labels, values=expense_values, title='Monthly Expenses')
+
     graph_html = fig.to_html(full_html=False)
 
     return render_template('index.html', portfolios=portfolios, bills=bills,
                            total_portfolio_value=total_portfolio_value,
-                           total_expenses=total_expenses, remaining_money=remaining_money,
-                           spent_percentage=spent_percentage, savings_percentage=savings_percentage,
-                           advice=advice, table_data=table_data, graph_html=graph_html)
-
+                           total_expenses=total_expenses,
+                           remaining_money=remaining_money,
+                           table_data=table_data,
+                           graph_html=graph_html)
 
 
 @app.route('/add_portfolio', methods=['POST'])
@@ -82,4 +80,3 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
     app.run(debug=True)
-
